@@ -6,6 +6,12 @@ import japanize_matplotlib  # noqa 401
 import streamlit as st
 
 
+a_open = st.number_input("A：開封数", value=100, step=1, format="%d")  # 整数入力
+a_sent = st.number_input("A：送信数", value=500, step=1, format="%d")  # 整数入力
+b_open = st.number_input("B：開封数", value=100, step=1, format="%d")  # 整数入力
+b_sent = st.number_input("B：送信数", value=500, step=1, format="%d")  # 整数入力
+
+
 def mcmc_abtest_from_dist(
     parameter_a: int,
     num_a: int,
@@ -15,6 +21,7 @@ def mcmc_abtest_from_dist(
     grade: str,
     kind: str,
 ) -> None:
+
     with pm.Model() as model:
         theta = pm.Uniform("theta", lower=0.1, upper=0.4, shape=2)
         obs = pm.Binomial(  # noqa F841
@@ -54,4 +61,4 @@ def mcmc_abtest_from_dist(
     st.pyplot(plt)
 
 
-mcmc_abtest_from_dist(121, 659, 102, 672, '0713', 'H2', '開封率')
+mcmc_abtest_from_dist(a_open, a_sent, b_open, b_sent, '0713', 'H2', '開封率')

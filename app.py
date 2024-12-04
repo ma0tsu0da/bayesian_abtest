@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import japanize_matplotlib  # noqa 401
 import streamlit as st
+from io import BytesIO
 
 
 col1, col2 = st.columns(2) 
@@ -61,6 +62,18 @@ def mcmc_abtest_from_dist(
         plt.legend()
         plt.tight_layout()
         st.pyplot(plt)
+
+        buf = BytesIO()
+        plt.savefig(buf, format="png")  # グラフをバッファに保存
+        buf.seek(0)  # バッファの先頭に戻る
+
+        # ダウンロードボタン
+        st.download_button(
+            label="グラフを保存",
+            data=buf,
+            file_name="plot.png",
+            mime="image/png",
+        )
 
 
 mcmc_abtest_from_dist(a_open, a_sent, b_open, b_sent, '0713', 'H2', '開封率')

@@ -51,8 +51,7 @@ def mcmc_abtest_from_dist(
     plt.title(f"{day}・{grade}_{kind}のABテスト")
     plt.legend()
     plt.tight_layout()
-    plt.savefig(f"./out/{day}_{grade}_{kind}.png", dpi=72)
     st.pyplot(plt)
 
 
-mcmc_abtest_from_dist(121, 659, 102, 672, '0713', '高2', '開封率')
+mcmc_abtest_from_dist(121, 659, 102, 672, '0713', 'H2', '開封率')

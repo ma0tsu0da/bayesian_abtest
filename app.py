@@ -6,10 +6,12 @@ import japanize_matplotlib  # noqa 401
 import streamlit as st
 
 
-a_open = st.number_input("A：開封数", value=100, step=1, format="%d")  # 整数入力
-a_sent = st.number_input("A：送信数", value=500, step=1, format="%d")  # 整数入力
-b_open = st.number_input("B：開封数", value=100, step=1, format="%d")  # 整数入力
-b_sent = st.number_input("B：送信数", value=500, step=1, format="%d")  # 整数入力
+col1, col2 = st.columns(2) 
+with col1:
+    a_open = st.number_input("A：開封数", value=100, step=1, format="%d")  # 整数入力
+    a_sent = st.number_input("A：送信数", value=500, step=1, format="%d")  # 整数入力
+    b_open = st.number_input("B：開封数", value=100, step=1, format="%d")  # 整数入力
+    b_sent = st.number_input("B：送信数", value=500, step=1, format="%d")  # 整数入力
 
 
 def mcmc_abtest_from_dist(
@@ -51,14 +53,14 @@ def mcmc_abtest_from_dist(
     g_.map(
         sns.histplot, data=diff_n_, color="blue", label=f"Aが高い確率 = {1-prob_:.4f}"
     )
-
-    plt.vlines(0, 0, 600, colors="gray")
-    plt.ylim(0, 600)
-    plt.xlabel(f"{kind}の差")
-    plt.title(f"{day}・{grade}_{kind}のABテスト")
-    plt.legend()
-    plt.tight_layout()
-    st.pyplot(plt)
+    with col2:
+        plt.vlines(0, 0, 600, colors="gray")
+        plt.ylim(0, 600)
+        plt.xlabel(f"{kind}の差")
+        plt.title(f"{day}・{grade}_{kind}のABテスト")
+        plt.legend()
+        plt.tight_layout()
+        st.pyplot(plt)
 
 
 mcmc_abtest_from_dist(a_open, a_sent, b_open, b_sent, '0713', 'H2', '開封率')

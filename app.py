@@ -97,7 +97,7 @@ with col2:
     plt.savefig(buf, format="png")
     buf.seek(0)
     st.download_button(
-        label="グラフを保存",
+        label="グラフの保存",
         data=buf,
         file_name="plot.png",
         mime="image/png",

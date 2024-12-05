@@ -69,6 +69,27 @@ def plot_abtest(
     return fig
 
 
+st.markdown("""
+    <style>
+    .custom-title {
+        font-size: 40px; /* タイトルのフォントサイズ */
+        font-weight: bold; /* 太字 */
+        color: #4CAF50; /* 緑色 */
+    }
+    .custom-header {
+        font-size: 30px; /* ヘッダーのフォントサイズ */
+        font-weight: normal; /* 標準の太さ */
+        color: #2196F3; /* 青色 */
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# タイトル
+st.markdown('<p class="custom-title">カスタムタイトル</p>', unsafe_allow_html=True)
+
+# ヘッダー
+st.markdown('<p class="custom-header">カスタムヘッダー</p>', unsafe_allow_html=True)
+
 st.set_page_config(page_title="Baysian_Abtest", page_icon="📊", layout="centered")
 
 st.title("ABテストの実行")

@@ -69,6 +69,8 @@ def plot_abtest(
     return fig
 
 
+st.set_page_config(page_title="Baysian_Abtest", page_icon="📊", layout="centered")
+
 st.markdown("""
     <style>
     .custom-title {
@@ -85,18 +87,12 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # タイトル
-st.markdown('<p class="custom-title">カスタムタイトル</p>', unsafe_allow_html=True)
-
-# ヘッダー
-st.markdown('<p class="custom-header">カスタムヘッダー</p>', unsafe_allow_html=True)
-
-st.set_page_config(page_title="Baysian_Abtest", page_icon="📊", layout="centered")
-
-st.title("ABテストの実行")
+st.markdown('<p class="custom-title">ABテストの実行</p>', unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 with col1:
-    st.header("開封数・送信数の入力")
+    # ヘッダー
+    st.markdown('<p class="custom-header">開封数・送信数の入力</p>', unsafe_allow_html=True)
     st.write(
         """
         - 入力は0以上の整数を想定しています。
@@ -110,7 +106,8 @@ with col1:
 
 
 with col2:
-    st.header("ABテスト プロットの出力")
+    st.markdown('<p class="custom-header">ABテスト プロットの出力</p>', unsafe_allow_html=True)
+
     fig = plot_abtest(a_open, a_sent, b_open, b_sent, "0713", "H2", "開封率")
     st.pyplot(fig)
 

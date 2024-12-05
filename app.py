@@ -7,22 +7,11 @@ import streamlit as st
 from io import BytesIO
 
 
-col1, col2 = st.columns(2) 
-with col1:
-    a_open = st.number_input("A：開封数", value=100, step=1, format="%d")  # 整数入力
-    a_sent = st.number_input("A：送信数", value=500, step=1, format="%d")  # 整数入力
-    b_open = st.number_input("B：開封数", value=100, step=1, format="%d")  # 整数入力
-    b_sent = st.number_input("B：送信数", value=500, step=1, format="%d")  # 整数入力
-
-
 def mcmc_abtest_from_dist(
     parameter_a: int,
     num_a: int,
     parameter_b: int,
     num_b: int,
-    day: str,
-    grade: str,
-    kind: str,
 ) -> None:
 
     with pm.Model() as model:
@@ -42,6 +31,21 @@ def mcmc_abtest_from_dist(
         pm.plot_trace(trace, ["theta"], compact=True)
         diff_ = thetab_hat_ - thetaa_hat_
 
+    return diff_
+
+
+def plot_abtest(
+    parameter_a: int,
+    num_a: int,
+    parameter_b: int,
+    num_b: int,
+    day: str,
+    grade: str,
+    kind: str,
+):
+    diff_: np.ndarray[np.float64] = mcmc_abtest_from_dist(
+        parameter_a, num_a, parameter_b, num_b
+    )
     diff_p_ = []
     diff_n_ = []
     for i in range(len(diff_)):
@@ -50,30 +54,54 @@ def mcmc_abtest_from_dist(
         else:
             diff_n_.append(diff_[i])
     prob_ = len(diff_p_) / len(diff_)
-    g_ = sns.displot(diff_p_, color="red", label=f"Bが高い確率 = {prob_:.4f}")
-    g_.map(
-        sns.histplot, data=diff_n_, color="blue", label=f"Aが高い確率 = {1-prob_:.4f}"
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    # Seabornのプロットを描画
+    sns.histplot(diff_p_, color="red", label=f"Bが高い確率 = {prob_:.4f}", ax=ax)
+    sns.histplot(diff_n_, color="blue", label=f"Aが高い確率 = {1-prob_:.4f}", ax=ax)
+
+    # プロットの修飾
+    ax.vlines(0, 0, 600, colors="gray")
+    ax.set_ylim(0, 600)
+    ax.set_xlabel(f"{kind}の差")
+    ax.set_title(f"{day}・{grade}_{kind}のABテスト")
+    ax.legend()
+    plt.tight_layout()
+
+    return fig
+
+
+st.set_page_config(page_title="Baysian_Abtest", page_icon="📊", layout="wide")
+
+st.title("ABテストの実行")
+
+col1, col2 = st.columns(2)
+with col1:
+    st.header("開封数・送信数の入力")
+    st.write(
+        """
+        - 入力は0以上の整数を想定しています。
+    """
     )
-    with col2:
-        plt.vlines(0, 0, 600, colors="gray")
-        plt.ylim(0, 600)
-        plt.xlabel(f"{kind}の差")
-        plt.title(f"{day}・{grade}_{kind}のABテスト")
-        plt.legend()
-        plt.tight_layout()
-        st.pyplot(plt)
 
-        buf = BytesIO()
-        plt.savefig(buf, format="png")  # グラフをバッファに保存
-        buf.seek(0)  # バッファの先頭に戻る
-
-        # ダウンロードボタン
-        st.download_button(
-            label="グラフを保存",
-            data=buf,
-            file_name="plot.png",
-            mime="image/png",
-        )
+    a_open = st.number_input("A：開封数", value=100, step=1, format="%d")  # 整数入力
+    a_sent = st.number_input("A：送信数", value=500, step=1, format="%d")  # 整数入力
+    b_open = st.number_input("B：開封数", value=100, step=1, format="%d")  # 整数入力
+    b_sent = st.number_input("B：送信数", value=500, step=1, format="%d")  # 整数入力
 
 
-mcmc_abtest_from_dist(a_open, a_sent, b_open, b_sent, '0713', 'H2', '開封率')
+with col2:
+    st.header("ABテスト　プロットの出力")
+    fig = plot_abtest(a_open, a_sent, b_open, b_sent, "0713", "H2", "開封率")
+    st.pyplot(fig)
+
+    buf = BytesIO()
+    plt.savefig(buf, format="png")  # グラフをバッファに保存
+    buf.seek(0)  # バッファの先頭に戻る
+    # ダウンロードボタン
+    st.download_button(
+        label="グラフを保存",
+        data=buf,
+        file_name="plot.png",
+        mime="image/png",
+    )

@@ -54,12 +54,12 @@ def plot_abtest(
         else:
             diff_n_.append(diff_[i])
     prob_ = len(diff_p_) / len(diff_)
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(6, 10))
 
     sns.histplot(diff_p_, color="red", label=f"Bが高い確率 = {prob_:.4f}", ax=ax)
     sns.histplot(diff_n_, color="blue", label=f"Aが高い確率 = {1-prob_:.4f}", ax=ax)
 
-    ax.vlines(0, 0, 300, colors="gray")
+    ax.vlines(0, 0, 600, colors="gray")
     ax.set_ylim(0, 600)
     ax.set_xlabel(f"{kind}の差")
     ax.set_title(f"{day}・{grade}_{kind}のABテスト")

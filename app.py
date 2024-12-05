@@ -56,11 +56,9 @@ def plot_abtest(
     prob_ = len(diff_p_) / len(diff_)
     fig, ax = plt.subplots(figsize=(10, 6))
 
-    # Seabornのプロットを描画
     sns.histplot(diff_p_, color="red", label=f"Bが高い確率 = {prob_:.4f}", ax=ax)
     sns.histplot(diff_n_, color="blue", label=f"Aが高い確率 = {1-prob_:.4f}", ax=ax)
 
-    # プロットの修飾
     ax.vlines(0, 0, 600, colors="gray")
     ax.set_ylim(0, 600)
     ax.set_xlabel(f"{kind}の差")
@@ -96,9 +94,8 @@ with col2:
     st.pyplot(fig)
 
     buf = BytesIO()
-    plt.savefig(buf, format="png")  # グラフをバッファに保存
-    buf.seek(0)  # バッファの先頭に戻る
-    # ダウンロードボタン
+    plt.savefig(buf, format="png")
+    buf.seek(0)
     st.download_button(
         label="グラフを保存",
         data=buf,

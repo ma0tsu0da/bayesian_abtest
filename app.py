@@ -69,7 +69,7 @@ def plot_abtest(
     return fig
 
 
-st.set_page_config(page_title="Baysian_Abtest", page_icon="📊", layout="wide")
+st.set_page_config(page_title="Baysian_Abtest", page_icon="📊", layout="centered")
 
 st.title("ABテストの実行")
 
@@ -89,7 +89,7 @@ with col1:
 
 
 with col2:
-    st.header("ABテスト　プロットの出力")
+    st.header("ABテスト プロットの出力")
     fig = plot_abtest(a_open, a_sent, b_open, b_sent, "0713", "H2", "開封率")
     st.pyplot(fig)
 

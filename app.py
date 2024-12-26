@@ -87,7 +87,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # タイトル
-st.markdown('<p class="custom-title">ABテストの実行</p>', unsafe_allow_html=True)
+st.markdown('<p class="custom-title">ベイジアンABテストの実行</p>', unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 with col1:

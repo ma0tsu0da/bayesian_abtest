@@ -121,7 +121,7 @@ with col2:
         mime="image/png",
     )
 
-st.subheader("ベイジアンABテストの概略")
+st.markdown('<p class="custom-header">ベイジアンABテストの概略</p>', unsafe_allow_html=True)
 st.write("""
          パラメータ（ここでは開封率やクリック率）の事前情報と、そのパラメータのもとで生成される実現値（ここでは対象者の開封・クリック行動）
          をもとに、A・Bそれぞれの「事後分布」を得る。この事後分布を比較することで、A・Bの間に差があるかを検証する。

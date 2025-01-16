@@ -146,14 +146,15 @@ st.write(f"""
          Bが高い確率… {prob:.4f} <br>
          """, unsafe_allow_html=True)
 
-st.markdown('<p class="custom-header">上記プロットの見方</p>', unsafe_allow_html=True)
-st.write("""
+st.markdown('<p class="custom-header">上記プロットの見方・使い方</p>', unsafe_allow_html=True)
+st.markdown("""
+        まず、これまでの経験から、開封率の下限と上限を設定する（事前分布の設定）。<br>
          上記プロットは、Aの開封率（クリック率）とBの開封率（クリック率）の差の確率分布である。
          - 正の領域（右側・赤色の部分）の面積は、BがAより大きくなる確率となる。
          - 負の領域（左側・青色の部分）の面積は、AがBより大きくなる確率となる。
          ある閾値をあらかじめ決めておき（ex. 0.95（95%）・0.9（90%））、それよりも大きい確率が出力された場合、
          AとBの間に統計的に有意な差があると判断する。
-         """)
+         """, unsafe_allow_html=True)
 
 
 st.markdown('<p class="custom-header">ベイジアンABテストの概略</p>', unsafe_allow_html=True)

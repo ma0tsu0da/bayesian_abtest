@@ -125,7 +125,7 @@ st.markdown('<p class="custom-header">確率</p>', unsafe_allow_html=True)
 st.write(f"""
          Aが高い確率… {1-prob:.4f} <br>
          Bが高い確率… {prob:.4f} <br>
-         """)
+         """, unsafe_allow_html=True)
 
 st.markdown('<p class="custom-header">上記プロットの見方</p>', unsafe_allow_html=True)
 st.write("""

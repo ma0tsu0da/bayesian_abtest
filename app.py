@@ -12,10 +12,12 @@ def mcmc_abtest_from_dist(
     num_a: int,
     parameter_b: int,
     num_b: int,
+    lower: float,
+    upper: float,
 ) -> None:
 
     with pm.Model() as model:
-        theta = pm.Uniform("theta", lower=0.1, upper=0.4, shape=2)
+        theta = pm.Uniform("theta", lower=lower, upper=upper, shape=2)
         obs = pm.Binomial(  # noqa F841
             "obs", p=theta, n=[num_a, num_b], observed=[parameter_a, parameter_b]
         )
@@ -42,9 +44,11 @@ def plot_abtest(
     day: str,
     grade: str,
     kind: str,
+    lower: float,
+    upper: float,
 ):
     diff_: np.ndarray[np.float64] = mcmc_abtest_from_dist(
-        parameter_a, num_a, parameter_b, num_b
+        parameter_a, num_a, parameter_b, num_b, lower, upper
     )
     diff_p_ = []
     diff_n_ = []
@@ -89,6 +93,21 @@ st.markdown("""
 # タイトル
 st.markdown('<p class="custom-title">ベイジアンABテストの実行</p>', unsafe_allow_html=True)
 
+lower = st.number_input(
+    label='開封率の下限',
+    min_value=0.0,        # 最小値
+    max_value=1.0,
+    value=0.0,            # 初期値
+    step=0.1,             # 増減ステップ
+    format="%.3f")
+upper = st.number_input(
+    label='開封率の上限',
+    min_value=0.0,        # 最小値
+    max_value=1.0,
+    value=0.0,            # 初期値
+    step=0.1,             # 増減ステップ
+    format="%.3f")
+
 col1, col2 = st.columns(2)
 with col1:
     # ヘッダー
@@ -108,7 +127,7 @@ with col1:
 with col2:
     st.markdown('<p class="custom-header">ABテスト プロットの出力</p>', unsafe_allow_html=True)
 
-    fig, prob = plot_abtest(a_open, a_sent, b_open, b_sent, "0713", "H2", "開封率")
+    fig, prob = plot_abtest(a_open, a_sent, b_open, b_sent, "0713", "H2", "開封率", lower, upper)
     st.pyplot(fig)
 
     buf = BytesIO()
@@ -132,8 +151,8 @@ st.write("""
          上記プロットは、Aの開封率（クリック率）とBの開封率（クリック率）の差の確率分布である。
          - 正の領域（右側・赤色の部分）の面積は、BがAより大きくなる確率となる。
          - 負の領域（左側・青色の部分）の面積は、AがBより大きくなる確率となる。
-         ある閾値をあらかじめ決めておき（ex. 0.95（95%）・0.9（90%））、それよりも大きい確率が出力された
-         場合、AとBの間に統計的に有意な差があると判断する。
+         ある閾値をあらかじめ決めておき（ex. 0.95（95%）・0.9（90%））、それよりも大きい確率が出力された場合、
+         AとBの間に統計的に有意な差があると判断する。
          """)
 
 

@@ -66,7 +66,7 @@ def plot_abtest(
     ax.legend()
     plt.tight_layout()
 
-    return fig
+    return fig, prob_
 
 
 st.set_page_config(page_title="Baysian_Abtest", page_icon="📊", layout="centered")
@@ -108,7 +108,7 @@ with col1:
 with col2:
     st.markdown('<p class="custom-header">ABテスト プロットの出力</p>', unsafe_allow_html=True)
 
-    fig = plot_abtest(a_open, a_sent, b_open, b_sent, "0713", "H2", "開封率")
+    fig, prob = plot_abtest(a_open, a_sent, b_open, b_sent, "0713", "H2", "開封率")
     st.pyplot(fig)
 
     buf = BytesIO()
@@ -120,6 +120,12 @@ with col2:
         file_name="plot.png",
         mime="image/png",
     )
+
+st.markdown('<p class="custom-header">確率</p>', unsafe_allow_html=True)
+st.write(f"""
+         Aが高い確率… {1-prob:.4f} <br>
+         Bが高い確率… {prob:.4f} <br>
+         """)
 
 st.markdown('<p class="custom-header">上記プロットの見方</p>', unsafe_allow_html=True)
 st.write("""

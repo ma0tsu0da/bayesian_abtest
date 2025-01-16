@@ -97,14 +97,14 @@ lower = st.number_input(
     label='開封率の下限',
     min_value=0.0,        # 最小値
     max_value=1.0,
-    value=0.0,            # 初期値
+    value=0.1,            # 初期値
     step=0.1,             # 増減ステップ
     format="%.3f")
 upper = st.number_input(
     label='開封率の上限',
     min_value=0.0,        # 最小値
     max_value=1.0,
-    value=0.0,            # 初期値
+    value=0.4,            # 初期値
     step=0.1,             # 増減ステップ
     format="%.3f")
 
